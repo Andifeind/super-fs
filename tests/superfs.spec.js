@@ -5,17 +5,61 @@ let sinon = require('sinon');
 inspect.useSinon(sinon);
 
 let fs = require('fs');
+let path = require('path');
 let SuperFS = require('../index');
+
+const TEST_FILE = [
+  '{',
+  '  "name": "test",',
+  '  "content": "Testfile"',
+  '}',
+  ''
+].join('\n');
 
 describe('SuperFS', function() {
   describe('readDir', function() {
-    it('Should read a directory', function() {
-      let files = SuperFS.readDir(__dirname);
-      inspect(files).isPromise();
+    let filesArray
 
-      return files.then(files => {
-        inspect.print(files);
-        inspect(files).isArray();
+    before(() => {
+      return SuperFS.readDir(path.join(__dirname, '../examples/')).then(files => {
+        filesArray = files;
+      });
+    });
+
+    it('Should read a directory', function() {
+      inspect(filesArray).isArray();
+    });
+
+    it('Should have a few files', function() {
+      let firstFile = filesArray[0];
+      let secondFile = filesArray[1];
+      inspect(firstFile).isObject();
+      inspect(secondFile).isObject();
+    });
+
+    it('Each file should have a read method', function() {
+      let firstFile = filesArray[0];
+      let secondFile = filesArray[1];
+      inspect(firstFile.read).isFunction();
+      inspect(secondFile.read).isFunction();
+    });
+
+    it('read() should return its file content in a promise', function() {
+      let secondFile = filesArray[1];
+      let read = secondFile.read();
+      inspect(read).isPromise();
+      return read.then(source => {
+        inspect(source).isEql(TEST_FILE);
+      });
+    });
+
+    it('readJSON() should return its file content in a promise as JSON', function() {
+      let secondFile = filesArray[1];
+      let read = secondFile.readJSON();
+      inspect(read).isPromise();
+      return read.then(json => {
+        inspect(json).isObject();
+        inspect(json).isEql(JSON.parse(TEST_FILE));
       });
     });
   });
