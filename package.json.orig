@@ -1,0 +1,37 @@
+{
+<<<<<<< HEAD
+  "name": "superfs",
+  "version": "0.0.0",
+  "description": "Better file system support",
+  "main": "index.js",
+  "author": "Andi Heinkelein <andifeind@noname-media.com>",
+  "license": "MIT",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Andifeind/super-fs.git"
+  },
+  "keywords": [
+    "fs",
+    "file",
+    "filesystem",
+    "readdir"
+  ],
+  "bugs": {
+    "url": "https://github.com/Andifeind/super-fs/issues"
+  },
+  "homepage": "https://github.com/Andifeind/super-fs#readme"
+=======
+  "name": "super-fs",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT"
+>>>>>>> 8a4755472c5ee3aeb6aa6ace3078ef4d3ae93097
+}

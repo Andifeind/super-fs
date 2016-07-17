@@ -1,0 +1,8 @@
+{
+    "project": "SuperFS",
+    "browser": false,
+    "libs": "",
+    "files": "",
+    "tests": "tests/*.spec.js",
+    "watch": ["index.js", "tests/*.spec.js", "libs/*.js"]
+}
