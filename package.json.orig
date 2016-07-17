@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "superfs",
   "version": "0.0.0",
   "description": "Better file system support",
@@ -22,4 +23,15 @@
     "url": "https://github.com/Andifeind/super-fs/issues"
   },
   "homepage": "https://github.com/Andifeind/super-fs#readme"
+=======
+  "name": "super-fs",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT"
+>>>>>>> 8a4755472c5ee3aeb6aa6ace3078ef4d3ae93097
 }
