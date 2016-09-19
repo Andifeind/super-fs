@@ -30,9 +30,9 @@ class SuperFS {
     });
   }
 
-  writeFile(content) {
+  writeFile(content, opts) {
     let file = new SuperFSFile(this.path);
-    return file.write(content);
+    return file.writeFile(content, opts);
   }
 
   createDir() {
@@ -82,28 +82,30 @@ class SuperFS {
   }
 }
 
-module.exports = {
-  readDir: function(dir) {
-    return new SuperFS().readDir(dir);
-  },
+module.exports = function(filePath) {
+  return new SuperFS(filePath);
+};
 
-  writeFile: function(file, content) {
-    return new SuperFS(file).writeFile(content);
-  },
+module.exports.readDir = function(dir) {
+  return new SuperFS().readDir(dir);
+};
 
-  createDir: function(dir) {
-    return new SuperFS(dir).createDir();
-  },
+module.exports.writeFile = function(file, content) {
+  return new SuperFS(file).writeFile(content);
+};
 
-  getFilter: function(filters) {
-    let filter = SuperFS.getFilterPattern(filters);
-    return {
-      filterFiles(file) {
-        return filter.files.test(file);
-      },
-      filterDirs(dir) {
-        return filter.dirs.test(dir);
-      }
+module.exports.createDir = function(dir) {
+  return new SuperFS(dir).createDir();
+};
+
+module.exports.getFilter = function(filters) {
+  let filter = SuperFS.getFilterPattern(filters);
+  return {
+    filterFiles(file) {
+      return filter.files.test(file);
+    },
+    filterDirs(dir) {
+      return filter.dirs.test(dir);
     }
   }
 };
