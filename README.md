@@ -12,7 +12,12 @@ SuperFS.readDir('foo/').then(files => {
 #### Write file
 ```js
 let SuperFS = require('super-fs');
-SuperFS.writeFile('foo/').then(files => {
+SuperFS.writeFile('foo/bar.js', 'FooBar').then(files => {
   // Files is an array of files of `foo/`
 });
+
+// or
+
+let file = SuperFS.file('foo/bar.js');
+yield file.write('FooBar');
 ```

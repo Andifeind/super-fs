@@ -7,6 +7,10 @@ let mkdir = require('./mkdir');
 
 class SuperFSFile {
   constructor(file) {
+    if (/^\.\.?/.test(file)) {
+      file = path.resolve(path.dirname(module.parent.parent.filename), file);
+    }
+
     this.path = file;
   }
 
@@ -49,7 +53,7 @@ class SuperFSFile {
     });
   }
 
-  writeFile(content, opts) {
+  write(content, opts) {
     opts = Object.assign({
       mode: 0o644
     }, opts || {});
@@ -57,7 +61,7 @@ class SuperFSFile {
 
     return new Promise((resolve, reject) => {
       mkdir(path.dirname(this.path), err => {
-        fs.writeFile(this.path, content, opts, (err, source) => {
+        fs.writeFile(this.path, content, opts, (err) => {
           if (err) {
             return reject(err);
           }
@@ -68,7 +72,7 @@ class SuperFSFile {
     });
   }
 
-  appendFile(content, opts) {
+  append(content, opts) {
     opts = Object.assign({
       mode: 0o644
     }, opts || {});
@@ -80,6 +84,18 @@ class SuperFSFile {
         }
 
         resolve(this);
+      });
+    });
+  }
+
+  exists() {
+    return new Promise((resolve, reject) => {
+      fs.access(this.path, function(err) {
+        if (err) {
+          return resolve(false);
+        }
+
+        resolve(true);
       });
     });
   }

@@ -32,7 +32,7 @@ class SuperFS {
 
   writeFile(content, opts) {
     let file = new SuperFSFile(this.path);
-    return file.writeFile(content, opts);
+    return file.write(content, opts);
   }
 
   createDir() {
@@ -86,12 +86,16 @@ module.exports = function(filePath) {
   return new SuperFS(filePath);
 };
 
+module.exports.file = function(filePath) {
+  return new SuperFSFile(filePath);
+};
+
 module.exports.readDir = function(dir) {
   return new SuperFS().readDir(dir);
 };
 
-module.exports.writeFile = function(file, content) {
-  return new SuperFS(file).writeFile(content);
+module.exports.writeFile = function(file, content, options) {
+  return new SuperFSFile(file).write(content, options);
 };
 
 module.exports.createDir = function(dir) {
