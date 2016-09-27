@@ -32,20 +32,20 @@ describe('SuperFS', function() {
 
     it('Should have a few files', function() {
       let firstFile = filesArray[0];
-      let secondFile = filesArray[1];
+      let secondFile = filesArray[2];
       inspect(firstFile).isObject();
       inspect(secondFile).isObject();
     });
 
     it('Each file should have a read method', function() {
       let firstFile = filesArray[0];
-      let secondFile = filesArray[1];
+      let secondFile = filesArray[2];
       inspect(firstFile.read).isFunction();
       inspect(secondFile.read).isFunction();
     });
 
     it('read() should return its file content in a promise', function() {
-      let secondFile = filesArray[1];
+      let secondFile = filesArray[2];
       let read = secondFile.read();
       inspect(read).isPromise();
       return read.then(source => {
@@ -54,7 +54,7 @@ describe('SuperFS', function() {
     });
 
     it('readJSON() should return its file content in a promise as JSON', function() {
-      let secondFile = filesArray[1];
+      let secondFile = filesArray[2];
       let read = secondFile.readJSON();
       inspect(read).isPromise();
       return read.then(json => {
@@ -87,6 +87,5 @@ describe('SuperFS', function() {
         inspect(state).isTrue();
       });
     });
-
   });
 });

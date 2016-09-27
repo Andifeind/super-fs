@@ -37,6 +37,15 @@ class SuperFSFile {
     });
   }
 
+  /**
+   * Reads a file
+   *
+   * @method read
+   * @param {string} [encoding=utf8] Changes encoding.
+   *
+   * @returns Returns a promise with a source buffer as its first argument
+   * @arg {object} source File content as a buffer
+   */
   read(encoding) {
     let opts = {
       encoding: encoding || 'utf8'
@@ -53,6 +62,15 @@ class SuperFSFile {
     });
   }
 
+  /**
+   * Writes a file
+   *
+   * @param {string} File content
+   * @param {object} Options object
+   *
+   * @returns {object} Returns a promise
+   * @arg {object} SuperFSFile object
+   */
   write(content, opts) {
     opts = Object.assign({
       mode: 0o644
