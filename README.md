@@ -1,9 +1,12 @@
-# super-fs
+SuperFS
+=======
 
-Better filesystem support
+[![Build Status](https://travis-ci.org/Andifeind/superfs.svg?branch=master)](https://travis-ci.org/Andifeind/superfs)
+
+Better filesystem support for Node.js
 
 ```js
-let SuperFS = require('super-fs');
+const SuperFS = require('super-fs');
 SuperFS.readDir('foo/').then(files => {
   // Files is an array of files of `foo/`
 });
@@ -11,13 +14,13 @@ SuperFS.readDir('foo/').then(files => {
 
 #### Write file
 ```js
-let SuperFS = require('super-fs');
+const SuperFS = require('super-fs');
 SuperFS.writeFile('foo/bar.js', 'FooBar').then(files => {
   // Files is an array of files of `foo/`
 });
 
 // or
 
-let file = SuperFS.file('foo/bar.js');
+const file = SuperFS.file('foo/bar.js');
 yield file.write('FooBar');
 ```
