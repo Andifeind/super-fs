@@ -104,7 +104,7 @@ describe('SuperFS', function() {
         fs.rmdirSync(__dirname + '/tmp/test');
         fs.rmdirSync(__dirname + '/tmp');
       } catch(err) {
-        console.error(err.stack);
+        throw err
       }
 
       done();
