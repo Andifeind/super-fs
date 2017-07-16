@@ -37,6 +37,39 @@ describe('SuperFS', function() {
       inspect(secondFile).isObject();
     });
 
+    it('should return an array of files', () => {
+      const TEST_FILES = [
+        'sub',
+        'piglet.jpg',
+        'test.json'
+      ]
+
+      for (const fl of filesArray) {
+        inspect(TEST_FILES).hasValue(fl.relative)
+      }
+    });
+
+    it('should read a folder recursive', () => {
+      const TEST_FILES = [
+        'sub',
+        'piglet.jpg',
+        'sub/lele.jpg',
+        'test.json'
+      ]
+
+      const opts = {
+        recursive: true
+      }
+
+      return SuperFS.readDir(path.join(__dirname, '../examples/'), opts).then(files => {
+        inspect(files).isArray(4)
+        inspect(files).hasLength(4)
+        for (const fl of files) {
+          inspect(TEST_FILES).hasValue(fl.relative)
+        }
+      });
+    });
+
     it('Each file should have a read method', function() {
       let firstFile = filesArray[0];
       let secondFile = filesArray[2];

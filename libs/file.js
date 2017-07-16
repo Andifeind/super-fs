@@ -75,7 +75,6 @@ class SuperFSFile {
     opts = Object.assign({
       mode: 0o644
     }, opts || {});
-    console.log('FFF', this.path);
 
     return new Promise((resolve, reject) => {
       mkdir(path.dirname(this.path), err => {
