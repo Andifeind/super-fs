@@ -5,6 +5,7 @@ const path = require('path')
 
 // const mkdir = require('./mkdir')
 const SuperFSFile = require('./file')
+const mkdir = require('./mkdir')
 
 class SuperFSDir {
   constructor(dirname) {
@@ -117,6 +118,85 @@ class SuperFSDir {
         resolve(true);
       });
     });
+  }
+
+  copy(dest, opts) {
+    opts = opts || {
+    }
+
+    return new Promise((resolve, reject) => {
+      mkdir(dest, (err) => {
+        if (err) {
+          throw err
+        }
+
+        this.read({
+          recursive: true
+        }).then((files) => {
+          Promise.all(files.map((fl) => {
+            return new Promise((innerResolve, innerReject) => {
+              const destFile = path.join(dest, fl.relative)
+
+              if (fl.isDir) {
+                fs.mkdir(destFile, opts.dirMode || fl.mode, (err) => {
+                  if (err) {
+                    throw err
+                  }
+
+                  innerResolve()
+                })
+              } else {
+                fs.readFile(fl.path, (err, data) => {
+                  if (err) {
+                    throw err
+                  }
+
+                  fs.writeFile(destFile, data, {
+                    mode: opts.fileMode || fl.mode
+                  }, (err) => {
+                    if (err) {
+                      throw err
+                    }
+
+                    innerResolve()
+                  })
+                })
+              }
+            })
+          })).then(resolve).catch(reject)
+        })
+      })
+    })
+  }
+
+  delete() {
+    return new Promise((resolve, reject) => {
+      this.read({
+        recursive: true
+      }).then((files) => {
+        Promise.all(files.sort((a, b) => a.isDir ? 1 : -1).map((fl) => {
+          return new Promise((innerResolve, innerReject) => {
+            if (fl.isDir) {
+              fs.rmdir(fl.path, (err) => {
+                if (err) {
+                  throw err
+                }
+
+                innerResolve()
+              })
+            } else {
+              fs.unlink(fl.path, (err, data) => {
+                if (err) {
+                  throw err
+                }
+
+                innerResolve()
+              })
+            }
+          })
+        })).then(resolve).catch(reject)
+      }).catch(reject)
+    })
   }
 }
 
