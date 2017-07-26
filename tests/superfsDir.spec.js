@@ -65,7 +65,7 @@ describe('SuperFSDir', () => {
   describe('copy()', () => {
     it('should copy a directory with all its subfolders', () => {
       const superDir = new SuperFSDir(path.join(__dirname, '../examples'))
-      const res = superDir.copy(path.join(__dirname, '../tmp/')).then(() => {
+      const res = superDir.copy(path.join(__dirname, '../tmp/'), true).then(() => {
         inspect(path.join(__dirname, '../tmp/test.json')).doesFileExists()
         inspect(path.join(__dirname, '../tmp/piglet.jpg')).doesFileExists()
         inspect(path.join(__dirname, '../tmp/sub/lele.jpg')).doesFileExists()
@@ -79,7 +79,7 @@ describe('SuperFSDir', () => {
   describe('delete()', () => {
     it('should delete a directory and all its files', () => {
       const superDir = new SuperFSDir(path.join(__dirname, '../tmp'))
-      const res = superDir.delete(path.join(__dirname, '../tmp/')).then(() => {
+      const res = superDir.delete().then(() => {
         inspect(path.join(__dirname, '../tmp/test.json')).doesNotFileExists()
         inspect(path.join(__dirname, '../tmp/piglet.jpg')).doesNotFileExists()
         inspect(path.join(__dirname, '../tmp/sub/lele.jpg')).doesNotFileExists()
@@ -89,5 +89,4 @@ describe('SuperFSDir', () => {
       return res
     });
   });
-
 });

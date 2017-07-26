@@ -24,3 +24,11 @@ SuperFS.writeFile('foo/bar.js', 'FooBar').then(files => {
 const file = SuperFS.file('foo/bar.js');
 yield file.write('FooBar');
 ```
+
+#### Copy dir
+
+```js
+SuperFS.copyDir('foo/', 'bar/').then(files => {
+  // Files is an array of files of `foo/`
+});
+```

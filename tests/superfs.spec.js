@@ -16,7 +16,7 @@ const TEST_FILE = [
   ''
 ].join('\n');
 
-describe('SuperFS', function() {
+describe.only('SuperFS', function() {
   describe('readDir', function() {
     let filesArray
 
@@ -119,6 +119,37 @@ describe('SuperFS', function() {
         inspect(stat.isDirectory()).isTrue();
         inspect(state).isTrue();
       });
+    });
+  });
+
+  describe('copyDir', () => {
+    it('should copy a directory with all its subfolders', () => {
+      const src = path.join(__dirname, '../examples');
+      const dest = path.join(__dirname, '../tmp/');
+
+      const sfs = SuperFS.copyDir(src, dest, true).then(() => {
+        inspect(path.join(__dirname, '../tmp/test.json')).doesFileExists()
+        inspect(path.join(__dirname, '../tmp/piglet.jpg')).doesFileExists()
+        inspect(path.join(__dirname, '../tmp/sub/lele.jpg')).doesFileExists()
+      })
+
+      inspect(sfs).isPromise()
+      return sfs
+    });
+  });
+
+  describe('deleteDir', () => {
+    it('should delete a directory with all its subfolders', () => {
+      const dir = path.join(__dirname, '../tmp/');
+
+      const sfs = SuperFS.deleteDir(dir).then(() => {
+        inspect(path.join(__dirname, '../tmp/test.json')).doesNotFileExists()
+        inspect(path.join(__dirname, '../tmp/piglet.jpg')).doesNotFileExists()
+        inspect(path.join(__dirname, '../tmp/sub/lele.jpg')).doesNotFileExists()
+      })
+
+      inspect(sfs).isPromise()
+      return sfs
     });
   });
 });

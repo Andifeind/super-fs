@@ -85,6 +85,14 @@ module.exports.createDir = function(dir) {
   return new SuperFS(dir).createDir();
 };
 
+module.exports.copyDir = function(src, dest, recursive) {
+  return new SuperFSDir(src).copy(dest, recursive);
+};
+
+module.exports.deleteDir = function(dir) {
+  return new SuperFSDir(dir).delete();
+};
+
 module.exports.getFilter = function(filters) {
   let filter = SuperFS.getFilterPattern(filters);
   return {

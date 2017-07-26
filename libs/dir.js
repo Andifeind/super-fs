@@ -126,7 +126,7 @@ class SuperFSDir {
 
     return new Promise((resolve, reject) => {
       mkdir(dest, (err) => {
-        if (err) {
+        if (err && err.code !== 'EEXIST') {
           throw err
         }
 
@@ -139,7 +139,7 @@ class SuperFSDir {
 
               if (fl.isDir) {
                 fs.mkdir(destFile, opts.dirMode || fl.mode, (err) => {
-                  if (err) {
+                  if (err && err.code !== 'EEXIST') {
                     throw err
                   }
 
