@@ -1,13 +1,12 @@
 'use strict';
 
-let inspect = require('inspect.js');
-let sinon = require('sinon');
+const inspect = require('inspect.js');
+const sinon = require('sinon');
 inspect.useSinon(sinon);
 
-let fs = require('fs');
-let path = require('path');
-let SuperFS = require('../index');
-let SuperFSFile = require('../libs/file');
+const path = require('path');
+const SuperFS = require('../index');
+const SuperFSFile = require('../libs/file');
 
 const TEST_FILE = [
   '{',
@@ -65,7 +64,7 @@ describe('SuperFSFile', function() {
           'errno': -2,
           'code': 'ENOENT',
           'syscall': 'open',
-          'path': '/home/andi/Webprojects/superfs/examples/not-found.json'
+          'path': path.join(__dirname, '../examples/not-found.json')
         });
       });
     });
