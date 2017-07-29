@@ -16,7 +16,7 @@ const TEST_FILE = [
   ''
 ].join('\n');
 
-describe.only('SuperFS', function() {
+describe('SuperFS', function() {
   describe('readDir', function() {
     let filesArray
 
