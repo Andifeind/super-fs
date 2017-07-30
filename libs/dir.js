@@ -143,7 +143,7 @@ class SuperFSDir {
                     throw err
                   }
 
-                  innerResolve()
+                  innerResolve(fl)
                 })
               } else {
                 fs.readFile(fl.path, (err, data) => {
@@ -158,7 +158,7 @@ class SuperFSDir {
                       throw err
                     }
 
-                    innerResolve()
+                    innerResolve(fl)
                   })
                 })
               }
@@ -182,7 +182,7 @@ class SuperFSDir {
                   throw err
                 }
 
-                innerResolve()
+                innerResolve(fl)
               })
             } else {
               fs.unlink(fl.path, (err, data) => {
@@ -190,7 +190,7 @@ class SuperFSDir {
                   throw err
                 }
 
-                innerResolve()
+                innerResolve(fl)
               })
             }
           })
