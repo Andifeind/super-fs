@@ -23,9 +23,13 @@
   },
   "homepage": "https://github.com/Andifeind/super-fs#readme",
   "devDependencies": {
-    "inspect.js": "^1.6.1",
+    "@noname-media/standard": "^1.0.1",
+    "inspect.js": "^1.7.0",
     "lagoon-reporter": "^0.3.3",
-    "mocha": "^3.4.2",
-    "sinon": "^2.4.1"
+    "mocha": "^3.5.3",
+    "sinon": "^3.2.1"
+  },
+  "dependencies": {
+    "co": "^4.6.0"
   }
 }

@@ -1,29 +1,29 @@
-'use strict';
+'use strict'
 
-let fs = require('fs');
-let path = require('path');
+const fs = require('fs')
+const path = require('path')
 
-let mkdir = function(dir, done) {
+const mkdir = function (dir, done) {
   fs.access(dir, err => {
     if (!err) {
-      return done();
+      return done()
     }
 
-    let curDir = path.join(dir, '../');
+    let curDir = path.join(dir, '../')
     if (curDir === '/') {
-      return done();
+      return done()
     }
 
     mkdir(curDir, err => {
       if (err) {
-        return done(err);
+        return done(err)
       }
 
       fs.mkdir(dir, err => {
-        done(err);
-      });
-    });
-  });
-};
+        done(err)
+      })
+    })
+  })
+}
 
-module.exports = mkdir;
+module.exports = mkdir
