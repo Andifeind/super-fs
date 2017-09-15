@@ -22,11 +22,29 @@ class FSTools {
     return arr
   }
 
+  static stat (file) {
+    return new Promise((resolve, reject) => {
+      fs.lstat(file, (err, stat) => {
+        if (err) return reject(err)
+        resolve(stat)
+      })
+    })
+  }
+
   static createDir (dir, opts) {
     return new Promise((resolve, reject) => {
       fs.mkdir(dir, opts, (err) => {
         if (err) return reject(err)
         resolve(dir)
+      })
+    })
+  }
+
+  static readDir (dir) {
+    return new Promise((resolve, reject) => {
+      fs.readdir(dir, (err, dirs) => {
+        if (err) return reject(err)
+        resolve(dirs)
       })
     })
   }

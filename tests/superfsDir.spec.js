@@ -15,7 +15,7 @@ describe('SuperFSDir', () => {
 
     it('should create a SuperFSDir instance', () => {
       inspect(testDir).isObject()
-    });
+    })
 
     it('should read a dir and returns all files', () => {
       const res = testDir.read()
@@ -35,7 +35,7 @@ describe('SuperFSDir', () => {
           inspect(TEST_FILES).hasValue(fl.name)
         }
       })
-    });
+    })
 
     it('should read a dir recursive and returns all files', () => {
       const res = testDir.read({
@@ -59,8 +59,8 @@ describe('SuperFSDir', () => {
           inspect(TEST_FILES).hasValue(fl.name)
         }
       })
-    });
-  });
+    })
+  })
 
   describe('copy()', () => {
     it('should copy a directory with all its subfolders', () => {
@@ -74,8 +74,8 @@ describe('SuperFSDir', () => {
 
       inspect(res).isPromise()
       return res
-    });
-  });
+    })
+  })
 
   describe('delete()', () => {
     it('should delete a directory and all its files', () => {

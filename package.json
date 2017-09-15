@@ -27,7 +27,8 @@
     "inspect.js": "^1.7.0",
     "lagoon-reporter": "^0.3.3",
     "mocha": "^3.5.3",
-    "sinon": "^3.2.1"
+    "sinon": "^3.2.1",
+    "testberry": "0.1.0"
   },
   "dependencies": {
     "co": "^4.6.0"

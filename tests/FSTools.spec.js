@@ -19,6 +19,32 @@ describe('FSTools', () => {
     })
   })
 
+  describe('stat()', () => {
+    it('should return fileinfos for a file', () => {
+      const file = path.join(__dirname, '../package.json')
+      const fsStat = FSTools.stat(file)
+      inspect(fsStat).isPromise()
+
+      return fsStat.then((res) => {
+        inspect(res).isObject()
+        inspect(res.isDirectory()).isFalse()
+        inspect(res.isFile()).isTrue()
+      })
+    })
+
+    it('should return fileinfos for a dir', () => {
+      const file = path.join(__dirname, '../examples')
+      const fsStat = FSTools.stat(file)
+      inspect(fsStat).isPromise()
+
+      return fsStat.then((res) => {
+        inspect(res).isObject()
+        inspect(res.isDirectory()).isTrue()
+        inspect(res.isFile()).isFalse()
+      })
+    })
+  })
+
   describe('createDir()', () => {
     it('should create a dir', () => {
       const dir = path.join(__dirname, './tmp')
@@ -27,6 +53,22 @@ describe('FSTools', () => {
 
       return fsDir.then((res) => {
         inspect(dir).isDirectory()
+      })
+    })
+  })
+
+  describe('readDir()', () => {
+    it('should read a dir', () => {
+      const dir = path.join(__dirname, '../examples')
+      const fsDir = FSTools.readDir(dir)
+      inspect(fsDir).isPromise()
+
+      return fsDir.then((res) => {
+        inspect(res).isEql([
+          'piglet.jpg',
+          'sub',
+          'test.json'
+        ])
       })
     })
   })
