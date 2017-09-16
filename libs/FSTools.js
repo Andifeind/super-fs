@@ -31,10 +31,10 @@ class FSTools {
     })
   }
 
-  static createDir (dir, opts) {
+  static createDir (dir, opt) {
     return new Promise((resolve, reject) => {
-      fs.mkdir(dir, opts, (err) => {
-        if (err) return reject(err)
+      fs.mkdir(dir, opt, (err) => {
+        if (err && !opt.silent) return reject(err)
         resolve(dir)
       })
     })
@@ -67,9 +67,9 @@ class FSTools {
     })
   }
 
-  static writeFile (file, content, opts) {
+  static writeFile (file, content, opt) {
     return new Promise((resolve, reject) => {
-      fs.writeFile(file, content, opts, (err, source) => {
+      fs.writeFile(file, content, opt, (err, source) => {
         if (err) return reject(err)
         resolve(source)
       })

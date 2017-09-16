@@ -136,6 +136,12 @@ describe('FSTools', () => {
   })
 
   describe('writeFile()', () => {
+    before(() => {
+      return FSTools.createDir(path.join(__dirname, '../tmp'), {
+        silent: true
+      })
+    })
+
     it('should write a file', () => {
       const file = path.join(__dirname, '../tmp/test.json')
       const fsFile = FSTools.writeFile(file, '{ "foo": "bar" }')
