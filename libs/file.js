@@ -128,11 +128,8 @@ class SuperFSFile {
     })
   }
 
-  writeJSON (encoding) {
-    let read = this.read(encoding)
-    return read.then(source => {
-      return JSON.parse(source)
-    })
+  writeJSON (json) {
+    return this.write(JSON.stringify(json, null, '  '))
   }
 }
 
