@@ -6,7 +6,6 @@ const path = require('path')
 const co = require('co')
 const SuperFSFile = require('./file')
 const FSTools = require('./FSTools')
-const mkdir = require('./mkdir')
 
 class SuperFSDir {
   constructor (dirname) {

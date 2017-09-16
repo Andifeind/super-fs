@@ -1,12 +1,12 @@
-'use strict';
+'use strict'
 
-const inspect = require('inspect.js');
-const sinon = require('sinon');
-inspect.useSinon(sinon);
+const inspect = require('inspect.js')
+const sinon = require('sinon')
+inspect.useSinon(sinon)
 
-const path = require('path');
-const SuperFS = require('../index');
-const SuperFSFile = require('../libs/file');
+const path = require('path')
+const SuperFS = require('../index')
+const SuperFSFile = require('../libs/file')
 
 const TEST_FILE = [
   '{',
@@ -14,72 +14,72 @@ const TEST_FILE = [
   '  "content": "Testfile"',
   '}',
   ''
-].join('\n');
+].join('\n')
 
-describe('SuperFSFile', function() {
-  describe('instance', function() {
-    let file;
+describe('SuperFSFile', function () {
+  describe('instance', function () {
+    let file
 
-    beforeEach(function() {
-      file = SuperFS.file('foo.js');
-    });
+    beforeEach(function () {
+      file = SuperFS.file('foo.js')
+    })
 
-    it('Gets a SuperFSFile instance', function() {
-      inspect(file).isInstanceOf(SuperFSFile);
-    });
+    it('Gets a SuperFSFile instance', function () {
+      inspect(file).isInstanceOf(SuperFSFile)
+    })
 
-    it('has a write method', function() {
-      inspect(file).hasMethod('write');
-    });
+    it('has a write method', function () {
+      inspect(file).hasMethod('write')
+    })
 
-    it('has a read method', function() {
-      inspect(file).hasMethod('read');
-    });
+    it('has a read method', function () {
+      inspect(file).hasMethod('read')
+    })
 
-    it('has a append method', function() {
-      inspect(file).hasMethod('append');
-    });
+    it('has a append method', function () {
+      inspect(file).hasMethod('append')
+    })
 
-    it('has an exists method', function() {
-      inspect(file).hasMethod('exists');
-    });
-  });
+    it('has an exists method', function () {
+      inspect(file).hasMethod('exists')
+    })
+  })
 
-  describe('read()', function() {
-    it('reads a file', function() {
-      let file = SuperFS.file('../examples/test.json');
+  describe('read()', function () {
+    it('reads a file', function () {
+      let file = SuperFS.file('../examples/test.json')
       return file.read().then(content => {
-        inspect(content).isEql(TEST_FILE);
-      });
-    });
+        inspect(content).isEql(TEST_FILE)
+      })
+    })
 
-    it('throws an file not found error', function() {
-      let file = SuperFS.file('../examples/not-found.json');
+    it('throws an file not found error', function () {
+      let file = SuperFS.file('../examples/not-found.json')
       return file.read().then(content => {
-        inspect(content).isEql(TEST_FILE);
+        inspect(content).isEql(TEST_FILE)
       }).catch(err => {
-        return err;
+        return err
       }).then(err => {
         inspect(err).isEql({
           'errno': -2,
           'code': 'ENOENT',
           'syscall': 'open',
           'path': path.join(__dirname, '../examples/not-found.json')
-        });
-      });
-    });
-  });
+        })
+      })
+    })
+  })
 
-  describe('write()', function() {
-    it('writes a file', function() {
-      let file = SuperFS.file('../tmp/test.json');
+  describe('write()', function () {
+    it('writes a file', function () {
+      let file = SuperFS.file('../tmp/test.json')
       return file.write('Test').then(content => {
         inspect(content).hasProps({
           name: 'test.json',
           size: 4,
           isFile: true
-        });
-      });
-    });
-  });
-});
+        })
+      })
+    })
+  })
+})

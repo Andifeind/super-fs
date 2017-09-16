@@ -1,24 +1,24 @@
-'use strict';
+'use strict'
 
-let fs = require('fs');
-let path = require('path');
+const fs = require('fs')
+const path = require('path')
 
-let mkdir = require('./mkdir');
+const mkdir = require('./mkdir')
 
 class SuperFSFile {
-  constructor(file) {
+  constructor (file) {
     if (/^\.\.?/.test(file)) {
-      file = path.resolve(path.dirname(module.parent.parent.filename), file);
+      file = path.resolve(path.dirname(module.parent.parent.filename), file)
     }
 
-    this.path = file;
+    this.path = file
   }
 
-  create() {
+  create () {
     return new Promise((resolve, reject) => {
       fs.lstat(this.path, (err, stat) => {
         if (err) {
-          return reject(err);
+          return reject(err)
         }
 
         resolve(Object.assign(this, {
@@ -32,9 +32,9 @@ class SuperFSFile {
           isCharDevice: stat.isCharacterDevice(),
           isFIFO: stat.isFIFO(),
           isSocket: stat.isSocket()
-        }, stat));
+        }, stat))
       })
-    });
+    })
   }
 
   /**
@@ -46,20 +46,20 @@ class SuperFSFile {
    * @returns Returns a promise with a source buffer as its first argument
    * @arg {object} source File content as a buffer
    */
-  read(encoding) {
+  read (encoding) {
     let opts = {
       encoding: encoding || 'utf8'
-    };
+    }
 
     return new Promise((resolve, reject) => {
-      fs.readFile(this.path, opts, function(err, source) {
+      fs.readFile(this.path, opts, function (err, source) {
         if (err) {
-          return reject(err);
+          return reject(err)
         }
 
-        resolve(source);
-      });
-    });
+        resolve(source)
+      })
+    })
   }
 
   /**
@@ -71,58 +71,69 @@ class SuperFSFile {
    * @returns {object} Returns a promise
    * @arg {object} SuperFSFile object
    */
-  write(content, opts) {
+  write (content, opts) {
     opts = Object.assign({
       mode: 0o644
-    }, opts || {});
+    }, opts || {})
 
     return new Promise((resolve, reject) => {
-      mkdir(path.dirname(this.path), err => {
+      mkdir(path.dirname(this.path), (err) => {
+        if (err) {
+          return reject(err)
+        }
+
         fs.writeFile(this.path, content, opts, (err) => {
           if (err) {
-            return reject(err);
+            return reject(err)
           }
 
-          this.create().then(resolve).catch(reject);
-        });
-      });
-    });
+          this.create().then(resolve).catch(reject)
+        })
+      })
+    })
   }
 
-  append(content, opts) {
+  append (content, opts) {
     opts = Object.assign({
       mode: 0o644
-    }, opts || {});
+    }, opts || {})
 
     return new Promise((resolve, reject) => {
-      fs.appendFile(this.path, content, opts, function(err, source) {
+      fs.appendFile(this.path, content, opts, function (err, source) {
         if (err) {
-          return reject(err);
+          return reject(err)
         }
 
-        resolve(this);
-      });
-    });
+        resolve(this)
+      })
+    })
   }
 
-  exists() {
+  exists () {
     return new Promise((resolve, reject) => {
-      fs.access(this.path, function(err) {
+      fs.access(this.path, function (err) {
         if (err) {
-          return resolve(false);
+          return resolve(false)
         }
 
-        resolve(true);
-      });
-    });
+        resolve(true)
+      })
+    })
   }
 
-  readJSON(encoding) {
-    let read = this.read(encoding);
+  readJSON (encoding) {
+    let read = this.read(encoding)
     return read.then(source => {
-      return JSON.parse(source);
-    });
+      return JSON.parse(source)
+    })
+  }
+
+  writeJSON (encoding) {
+    let read = this.read(encoding)
+    return read.then(source => {
+      return JSON.parse(source)
+    })
   }
 }
 
-module.exports = SuperFSFile;
+module.exports = SuperFSFile
