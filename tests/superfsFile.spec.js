@@ -82,4 +82,20 @@ describe('SuperFSFile', function () {
       })
     })
   })
+
+  describe('writeJSON()', function () {
+    it('writes a JSON file', function () {
+      let file = SuperFS.file('../tmp/test.json')
+      return file.writeJSON({ test: 'Test' }).then(content => {
+        inspect(content).hasProps({
+          name: 'test.json',
+          size: 4,
+          isFile: true
+        })
+
+        inspect(path.join(__dirname, '../tmp/test.json')).isFile()
+        inspect(path.join(__dirname, '../tmp/test.json')).fileContains('name: "foo"')
+      })
+    })
+  })
 })
