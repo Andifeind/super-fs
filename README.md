@@ -57,3 +57,16 @@ SuperFS.copyDir('foo/', 'bar/').then(files => {
   // Files is an array of files of `foo/`
 });
 ```
+
+#### Watch dir
+
+```js
+const SuperFS = require('super-fs');
+SuperFS.watch('foo/bar.js', handlerFn).then(files => {
+  // Files is an array of files of `foo/`
+});
+
+// or
+
+const file = SuperFS.file('foo/bar.js');
+yield file.watch(handlerFn);

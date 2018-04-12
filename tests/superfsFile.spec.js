@@ -89,12 +89,12 @@ describe('SuperFSFile', function () {
       return file.writeJSON({ test: 'Test' }).then(content => {
         inspect(content).hasProps({
           name: 'test.json',
-          size: 4,
+          size: 20,
           isFile: true
         })
 
         inspect(path.join(__dirname, '../tmp/test.json')).isFile()
-        inspect(path.join(__dirname, '../tmp/test.json')).fileContains('name: "foo"')
+        inspect(path.join(__dirname, '../tmp/test.json')).fileContains('"test": "Test"')
       })
     })
   })

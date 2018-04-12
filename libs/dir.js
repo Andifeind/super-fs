@@ -49,15 +49,21 @@ class SuperFSDir {
    * @arg {object} source File content as a buffer
    */
   read (opts) {
-    opts = opts || {}
     opts = Object.assign({
       encoding: 'utf8',
       recursive: false,
-      relativePath: ''
-    }, opts)
+      relativePath: '',
+      skipFiles: false,
+      skipDirs: false,
+      addParent: false
+    }, opts || {})
 
     return co(function * () {
       const outFiles = []
+      if (opts.addParent) {
+        outFiles.push(yield this.create())
+      }
+
       const rawFiles = yield FSTools.readDir(this.path)
 
       for (const file of rawFiles) {
@@ -69,18 +75,27 @@ class SuperFSDir {
           yield dir.create()
 
           dir.relative = opts.relativePath ? `${opts.relativePath}/${dir.name}` : dir.name
-          outFiles.push(dir)
+          if (!opts.skipDirs) {
+            outFiles.push(dir)
+          }
+
           if (opts.recursive) {
             const subFiles = yield dir.read(Object.assign({}, opts, {
-              relativePath: opts.relativePath ? `${opts.relativePath}/${file}` : file
+              relativePath: opts.relativePath ? `${opts.relativePath}/${file}` : file,
+              addParent: false
             }))
 
             subFiles.forEach(s => outFiles.push(s))
           }
         } else {
+          if (opts.skipFiles) {
+            continue
+          }
+
           const fl = new SuperFSFile(filepath, {
             encoding: opts.encoding
           })
+
           yield fl.create()
           fl.relative = opts.relativePath ? `${opts.relativePath}/${fl.name}` : fl.name
           outFiles.push(fl)
@@ -205,6 +220,30 @@ class SuperFSDir {
     //     })).then(resolve).catch(reject)
     //   }).catch(reject)
     // })
+  }
+
+  watch (fn) {
+    return co(function * () {
+      const dirs = yield this.read({
+        recursive: true,
+        skipFiles: true,
+        addParent: true
+      })
+
+      for (const fl of dirs) {
+        fs.watch(fl.path, function fileChangeHandler (eventName, fileName) {
+          if (this.lock) {
+            return
+          }
+          this.lock = true
+          fl.changeMode = eventName
+          fn(fl)
+          setTimeout(() => this.lock = false, 500)
+        })
+      }
+
+      return dirs
+    }.bind(this))
   }
 }
 

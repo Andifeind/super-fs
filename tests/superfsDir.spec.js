@@ -2,6 +2,8 @@
 
 const path = require('path')
 const inspect = require('inspect.js')
+const sinon = require('sinon')
+inspect.useSinon(sinon)
 
 const SuperFSDir = require('../libs/dir')
 
@@ -89,6 +91,34 @@ describe('SuperFSDir', () => {
 
       inspect(res).isPromise()
       return res
+    })
+  })
+
+  describe('watch()', () => {
+    const testDir = path.join(__dirname, '../tmp')
+    const testFile = path.join(testDir, 'test.js')
+
+    beforeEach(() => {
+      inspect.removeFile(testFile)
+    })
+
+    it('watch a dir for changes', (done) => {
+      const superDir = new SuperFSDir(path.join(__dirname, '../tmp'))
+      const fn = (changed, b, c) => {
+        inspect(changed).hasProps({
+          path: testDir,
+          changeMode: 'rename'
+        })
+
+        done()
+      }
+
+      const res = superDir.watch(fn).then((dirs) => {
+        inspect(dirs).isArray().hasLength(1)
+        inspect.writeFile(testFile, 'foo')
+      })
+
+      inspect(res).isPromise()
     })
   })
 })
