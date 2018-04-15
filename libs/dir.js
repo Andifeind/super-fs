@@ -237,8 +237,11 @@ class SuperFSDir {
           }
           this.lock = true
           fl.changeMode = eventName
+          fl.changedFile = fileName
           fn(fl)
-          setTimeout(() => this.lock = false, 500)
+          setTimeout(() => {
+            this.lock = false
+          }, 500)
         })
       }
 

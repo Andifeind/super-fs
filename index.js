@@ -107,3 +107,8 @@ module.exports.getFilter = function (filters) {
     }
   }
 }
+
+module.exports.watch = function (dir, fn) {
+  const fl = new SuperFSDir(dir)
+  return fl.watch(fn)
+}
