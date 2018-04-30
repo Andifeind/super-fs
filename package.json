@@ -1,6 +1,6 @@
 {
   "name": "superfs",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Better file system support",
   "main": "index.js",
   "author": "Andi Heinkelein <andifeind@noname-media.com>",
