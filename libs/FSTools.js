@@ -84,6 +84,23 @@ class FSTools {
       })
     })
   }
+
+  static createFilterPattern (filter) {
+    if (!filter) {
+      return null
+    }
+
+    if (!Array.isArray(filter)) {
+      filter = [filter]
+    }
+
+    return new RegExp('(' + filter.map((item) => {
+      return item
+        .replace(/\./g, '\\.')
+        .replace(/\*/g, '.+')
+        .replace(/$/, '$')
+    }).join(')|(') + ')')
+  }
 }
 
 module.exports = FSTools

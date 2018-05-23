@@ -70,3 +70,5 @@ SuperFS.watch('foo/bar.js', handlerFn).then(files => {
 
 const file = SuperFS.file('foo/bar.js');
 yield file.watch(handlerFn);
+
+```

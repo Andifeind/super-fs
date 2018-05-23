@@ -62,6 +62,28 @@ describe('SuperFSDir', () => {
         }
       })
     })
+
+    it('should read a dir recursive and returns all *.jpg files', () => {
+      const res = testDir.read({
+        recursive: true,
+        filter: '*.jpg'
+      })
+
+      inspect(res).isPromise()
+
+      return res.then((files) => {
+        inspect(files).isArray()
+        inspect(files).hasLength(2)
+
+        inspect(files[0]).hasProps({
+          name: 'piglet.jpg'
+        })
+
+        inspect(files[1]).hasProps({
+          name: 'lele.jpg'
+        })
+      })
+    })
   })
 
   describe('copy()', () => {

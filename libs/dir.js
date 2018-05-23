@@ -40,13 +40,13 @@ class SuperFSDir {
   }
 
   /**
-   * Reads a file
+   * Reads a directory
    *
    * @method read
    * @param {string} [encoding=utf8] Changes encoding.
    *
-   * @returns Returns a promise with a source buffer as its first argument
-   * @arg {object} source File content as a buffer
+   * @returns Returns a promise with an array of files und directories. Each item is either a FSFile or FSDir object
+   * @arg {array} list Array of FSFile and FSDir objects
    */
   read (opts) {
     opts = Object.assign({
@@ -55,8 +55,11 @@ class SuperFSDir {
       relativePath: '',
       skipFiles: false,
       skipDirs: false,
-      addParent: false
+      addParent: false,
+      filter: null
     }, opts || {})
+
+    const fileFilter = FSTools.createFilterPattern(opts.filter)
 
     return co(function * () {
       const outFiles = []
@@ -75,13 +78,14 @@ class SuperFSDir {
           yield dir.create()
 
           dir.relative = opts.relativePath ? `${opts.relativePath}/${dir.name}` : dir.name
-          if (!opts.skipDirs) {
+          if (!opts.skipDirs && (!fileFilter || (fileFilter && fileFilter.test(dir.relative)))) {
             outFiles.push(dir)
           }
 
           if (opts.recursive) {
             const subFiles = yield dir.read(Object.assign({}, opts, {
               relativePath: opts.relativePath ? `${opts.relativePath}/${file}` : file,
+              filter: opts.filter,
               addParent: false
             }))
 
@@ -89,6 +93,10 @@ class SuperFSDir {
           }
         } else {
           if (opts.skipFiles) {
+            continue
+          }
+
+          if (fileFilter && !fileFilter.test(filepath)) {
             continue
           }
 

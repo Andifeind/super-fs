@@ -166,4 +166,18 @@ describe('FSTools', () => {
       })
     })
   })
+
+  describe('createFilterPattern()', () => {
+    const testFilters = []
+    testFilters.push({ str: '*.js', reg: /(.+\.js$)/, negated: true })
+    testFilters.push({ str: ['*.js'], reg: /(.+\.js$)/, negated: true })
+    testFilters.push({ str: ['*.js', '*.json'], reg: /(.+\.js$)|(.+\.json$)/, negated: true })
+
+    testFilters.forEach((filter) => {
+      it(`should return a regexp from filter ${filter.str}`, () => {
+        const reg = FSTools.createFilterPattern(filter.str)
+        inspect(reg).isEql(filter.reg)
+      })
+    })
+  })
 })
