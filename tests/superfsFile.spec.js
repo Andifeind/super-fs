@@ -83,6 +83,33 @@ describe('SuperFSFile', function () {
     })
   })
 
+  describe('copy()', function () {
+    it('copies a file', function () {
+      let file = SuperFS.file('../examples/test.json')
+      return file.copy('../tmp/test2.json').then(fl => {
+        inspect(fl).hasProps({
+          path: path.join(__dirname, '../tmp/test2.json')
+        })
+      })
+    })
+
+    it('throws an file not found error', function () {
+      let file = SuperFS.file('../examples/not-found.json')
+      return file.read().then(content => {
+        inspect(content).isEql(TEST_FILE)
+      }).catch(err => {
+        return err
+      }).then(err => {
+        inspect(err).isEql({
+          'errno': -2,
+          'code': 'ENOENT',
+          'syscall': 'open',
+          'path': path.join(__dirname, '../examples/not-found.json')
+        })
+      })
+    })
+  })
+
   describe('writeJSON()', function () {
     it('writes a JSON file', function () {
       let file = SuperFS.file('../tmp/test.json')

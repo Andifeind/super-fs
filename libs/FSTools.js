@@ -34,7 +34,7 @@ class FSTools {
   static createDir (dir, opt) {
     return new Promise((resolve, reject) => {
       fs.mkdir(dir, opt, (err) => {
-        if (err && !opt.silent) return reject(err)
+        if (err && opt && !opt.silent) return reject(err)
         resolve(dir)
       })
     })

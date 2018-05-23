@@ -1,6 +1,7 @@
 'use strict'
 
 const fs = require('fs')
+const co = require('co')
 const path = require('path')
 
 const mkdir = require('./mkdir')
@@ -119,6 +120,21 @@ class SuperFSFile {
         resolve(true)
       })
     })
+  }
+
+  copy (destFile) {
+    return co(function * () {
+      const data = yield this.read()
+      const fl = new SuperFSFile(destFile)
+      const targetExists = yield fl.exists()
+      fl.fileExists = targetExists
+      fl.fileOverwritten = true
+      yield fl.write(data, {
+        mode: fl.mode
+      })
+
+      return fl
+    }.bind(this))
   }
 
   readJSON (encoding) {
