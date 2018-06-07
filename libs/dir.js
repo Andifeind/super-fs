@@ -60,7 +60,7 @@ class SuperFSDir {
       ignore: []
     }, opts || {})
 
-    const fileFilter = FSTools.createFilterPattern(opts.filter)
+    const fileFilter = FSTools.createFileMatch(opts.filter)
 
     return co(function * () {
       const outFiles = []
