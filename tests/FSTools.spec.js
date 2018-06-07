@@ -177,6 +177,7 @@ describe('FSTools', () => {
       it(`should return a regexp from filter ${filter.str}`, () => {
         const reg = FSTools.createFilterPattern(filter.str)
         inspect(reg).isEql(filter.reg)
+      })
     })
   })
 
@@ -185,6 +186,7 @@ describe('FSTools', () => {
       { pat: '*.js', reg: /([^/]+\.js$)/ },
       { pat: 'foo/bar/bla.js', reg: /(foo\/bar\/bla\.js$)/ },
       { pat: '**/*.js', reg: /(.+\/[^/]+\.js$)/ },
+      { pat: 'test/**/*.js', reg: /(test\/.+\/[^/]+\.js$)/ },
       { pat: 'test/**/*.js', reg: /(test\/.+\/[^/]+\.js$)/ }
     ]
 
