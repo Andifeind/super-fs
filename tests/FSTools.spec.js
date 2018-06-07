@@ -177,6 +177,21 @@ describe('FSTools', () => {
       it(`should return a regexp from filter ${filter.str}`, () => {
         const reg = FSTools.createFilterPattern(filter.str)
         inspect(reg).isEql(filter.reg)
+    })
+  })
+
+  describe('createFileMatch', () => {
+    const pattern = [
+      { pat: '*.js', reg: /([^/]+\.js$)/ },
+      { pat: 'foo/bar/bla.js', reg: /(foo\/bar\/bla\.js$)/ },
+      { pat: '**/*.js', reg: /(.+\/[^/]+\.js$)/ },
+      { pat: 'test/**/*.js', reg: /(test\/.+\/[^/]+\.js$)/ }
+    ]
+
+    pattern.forEach((test) => {
+      it(`returns a file pattern reg exp from ${test.pat}`, () => {
+        const pat = FSTools.createFileMatch(test.pat)
+        inspect(pat).isEql(test.reg)
       })
     })
   })

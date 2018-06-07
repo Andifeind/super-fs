@@ -56,7 +56,8 @@ class SuperFSDir {
       skipFiles: false,
       skipDirs: false,
       addParent: false,
-      filter: null
+      filter: null,
+      ignore: []
     }, opts || {})
 
     const fileFilter = FSTools.createFilterPattern(opts.filter)
@@ -230,7 +231,12 @@ class SuperFSDir {
     // })
   }
 
-  watch (fn) {
+  watch (opts, fn) {
+    if (typeof opts === 'function') {
+      fn = opts
+      opts = {}
+    }
+
     return co(function * () {
       const dirs = yield this.read({
         recursive: true,
@@ -238,7 +244,15 @@ class SuperFSDir {
         addParent: true
       })
 
+      const ignoreReg = opts.ignore
+        ? FSTools.createFileMatch(opts.ignore)
+        : null
+
       for (const fl of dirs) {
+        if (ignoreReg && ignoreReg.test(fl.path)) {
+          continue
+        }
+
         fs.watch(fl.path, function fileChangeHandler (eventName, fileName) {
           if (this.lock) {
             return

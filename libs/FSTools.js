@@ -101,6 +101,21 @@ class FSTools {
         .replace(/$/, '$')
     }).join(')|(') + ')')
   }
+
+  static createFileMatch (pattern) {
+    const mkPat = (pat) => {
+      return pat.replace(/([./])/g, '\\$&')
+        .replace(/\*\*/g, '.+')
+        .replace(/\*/g, '[^/]+') + '$'
+    }
+
+    if (Array.isArray(pattern)) {
+      const reg = pattern.map((pat) => mkPat(pat)).join(')|(')
+      return new RegExp(`(${reg})`)
+    }
+
+    return new RegExp('(' + mkPat(pattern) + ')')
+  }
 }
 
 module.exports = FSTools
