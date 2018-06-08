@@ -57,10 +57,10 @@ class SuperFSDir {
       skipDirs: false,
       addParent: false,
       filter: null,
-      ignore: []
+      ignore: null
     }, opts || {})
 
-    const fileFilter = FSTools.createFilterPattern(opts.filter)
+    const fileFilter = FSTools.createFileMatch(opts.filter)
 
     return co(function * () {
       const outFiles = []
@@ -68,7 +68,21 @@ class SuperFSDir {
         outFiles.push(yield this.create())
       }
 
-      const rawFiles = yield FSTools.readDir(this.path)
+      const ignoreReg = opts.ignore
+        ? FSTools.createFileMatch(opts.ignore)
+        : null
+
+      let rawFiles = yield FSTools.readDir(this.path)
+
+      if (ignoreReg) {
+        rawFiles = rawFiles.filter((file) => {
+          if (ignoreReg.test(file)) {
+            return true
+          }
+
+          return false
+        })
+      }
 
       for (const file of rawFiles) {
         const filepath = path.join(this.path, file)
@@ -90,7 +104,13 @@ class SuperFSDir {
               addParent: false
             }))
 
-            subFiles.forEach(s => outFiles.push(s))
+            subFiles.forEach(s => {
+              if (ignoreReg && ignoreReg.test(s.path)) {
+                return
+              }
+
+              outFiles.push(s)
+            })
           }
         } else {
           if (opts.skipFiles) {
