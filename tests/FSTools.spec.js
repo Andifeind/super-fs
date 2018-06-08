@@ -177,6 +177,7 @@ describe('FSTools', () => {
       it(`should return a regexp from filter ${filter.str}`, () => {
         const reg = FSTools.createFilterPattern(filter.str)
         inspect(reg).isEql(filter.reg)
+      })
     })
   })
 
