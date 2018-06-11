@@ -72,3 +72,9 @@ const file = SuperFS.file('foo/bar.js');
 yield file.watch(handlerFn);
 
 ```
+
+#### file/dir exists
+```js
+const SuperFS = require('super-fs');
+await SuperFS.exists('foo/bar.js');
+```

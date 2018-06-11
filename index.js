@@ -112,3 +112,8 @@ module.exports.watch = function (dir, opts, fn) {
   const fl = new SuperFSDir(dir)
   return fl.watch(opts, fn)
 }
+
+module.exports.exists = function (file) {
+  const fl = new SuperFSFile(file)
+  return fl.exists()
+}
